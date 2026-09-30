@@ -1,24 +1,27 @@
 # Pennywise Expense Tracker
 
-A private, mobile-friendly personal expense tracker with income and expense entry, monthly totals, a savings-rate estimate, category breakdowns, and a savings goal. It can run in local-browser demo mode or sync transactions to a Google Sheet.
+A private, mobile-friendly expense tracker with income and expense entry, monthly totals, savings insights, category breakdowns, and a savings goal. When configured, it stores transactions and the savings goal in Neon Postgres. Without database credentials, it runs in local-browser demo mode.
 
-## Google Sheet format
+## Connect a free Neon database through Vercel
 
-Create a Google Sheet and add a tab named `Transactions` with this header row:
+1. In Vercel, open the Pennywise project and go to **Storage** or **Marketplace**.
+2. Install **Neon** and select its free plan. Connect it to the Pennywise project for Production (and Preview if you want preview deployments to use the database).
+3. Vercel adds the database connection variable, usually `DATABASE_URL`, to the project. Create a new deployment after connecting the database.
+4. In **Settings → Environment Variables**, add:
+   - `APP_PASSWORD`: a strong password for the tracker.
+   - `SESSION_SECRET`: a long random secret used to sign login sessions.
+5. Redeploy after changing environment variables.
 
-`Date | Type | Category | Note | Amount | CreatedAt`
+The app creates its transactions and settings tables automatically the first time an authenticated request reaches the API. It stores transaction date, type, category, note, amount, and creation time, along with the savings goal. Database credentials are used only by server-side API routes.
 
-Create a Google Cloud service account, enable the Google Sheets API, and share the Sheet with the service-account email as an Editor. Add the following Vercel environment variables:
+## Environment variables
 
-- `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-- `GOOGLE_PRIVATE_KEY` (store the private key securely; use `\n` for line breaks if needed)
-- `GOOGLE_SHEET_ID` (from the Sheet URL)
-- `GOOGLE_SHEET_TAB` (optional; defaults to `Transactions`)
-- `APP_PASSWORD` (a strong private app password)
-- `SESSION_SECRET` (a long random secret)
+- `DATABASE_URL` — supplied by the Neon Vercel integration.
+- `APP_PASSWORD` — password used to unlock the private tracker.
+- `SESSION_SECRET` — long random session-signing key.
 
-Once those settings exist, the app will require the app password before loading or changing Sheet data. Without them, it stays in local-browser mode. Local-browser entries do not sync to Google Sheets.
+For local development, copy `.env.example` to `.env.local`, fill in these values, then run `npm install` and `npm run dev` with the Vercel CLI installed.
 
-## Run locally
+## Data note
 
-Install Vercel CLI and run `npm run dev`. The static frontend works without Google credentials; API routes require the variables above to use Google Sheets.
+The app now writes to Postgres. If you entered transactions into a Google Sheet before switching, those rows are not imported automatically; export them as CSV and add them to the database or use the app's CSV import workflow when available. The app does not need Google Sheets credentials.

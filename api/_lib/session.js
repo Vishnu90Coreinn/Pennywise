@@ -15,7 +15,7 @@ function verify(token) {
   } catch (_) { return false; }
 }
 function requireAuth(req, res) {
-  if (!process.env.APP_PASSWORD || !process.env.SESSION_SECRET) { res.status(503).json({ error: 'Google Sheets access is not configured yet.' }); return false; }
+  if (!process.env.DATABASE_URL || !process.env.APP_PASSWORD || !process.env.SESSION_SECRET) { res.status(503).json({ error: 'Database access is not configured yet.' }); return false; }
   const c = (req.headers.cookie || '').split(';').map(v => v.trim()).find(v => v.startsWith('pennywise_session='));
   if (!c || !verify(c.slice('pennywise_session='.length))) { res.status(401).json({ error: 'Please sign in to continue.' }); return false; }
   return true;

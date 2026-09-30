@@ -2,5 +2,6 @@
   "name": "pennywise-expense-tracker",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "dev": "vercel dev", "check": "node --check api/transactions.js && node --check api/auth.js" }
+  "scripts": { "dev": "vercel dev", "check": "node --check api/transactions.js && node --check api/settings.js && node --check api/_lib/database.js && node --check api/auth.js" },
+  "dependencies": { "@neondatabase/serverless": "^1.0.2" }
 }
