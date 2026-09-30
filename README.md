@@ -24,4 +24,4 @@ For local development, copy `.env.example` to `.env.local`, fill in these values
 
 ## Data note
 
-The app now writes to Postgres. If you entered transactions into a Google Sheet before switching, those rows are not imported automatically; export them as CSV and add them to the database or use the app's CSV import workflow when available. The app does not need Google Sheets credentials.
+The app now writes to Postgres. Existing transactions in a Google Sheet are not imported automatically, so keep the Sheet as a backup if it already contains data. The app does not need Google Sheets credentials.
