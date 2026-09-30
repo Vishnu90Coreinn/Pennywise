@@ -1,0 +1,6 @@
+{
+  "name": "pennywise-expense-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "dev": "vercel dev", "check": "node --check api/transactions.js && node --check api/auth.js" }
+}
